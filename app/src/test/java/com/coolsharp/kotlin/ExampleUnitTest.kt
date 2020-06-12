@@ -17,8 +17,8 @@ class ExampleUnitTest {
 
     private val MAX_SIZE = 7
 
-    val dx = arrayOf(-1, 0, 1,  0)
-    val dy = arrayOf( 0, 1, 0, -1)
+    val dx = arrayOf(-1, 0, 1, 0)
+    val dy = arrayOf(0, 1, 0, -1)
 
     var n = 7 // 행과 열의 수
     var group_id = 0 // 단지의 번호로 첫번째 단지부터 1로 시작
@@ -26,13 +26,14 @@ class ExampleUnitTest {
     val groups = IntArray(MAX_SIZE * MAX_SIZE) // 각 단지별 집의 수
 
     val map = arrayOf(
-        intArrayOf(0,1,1,0,1,0,0),
-        intArrayOf(0,1,1,0,1,0,1),
-        intArrayOf(1,1,1,0,1,0,1),
-        intArrayOf(0,0,0,0,1,1,1),
-        intArrayOf(0,1,0,0,0,0,0),
-        intArrayOf(0,1,1,1,1,1,0),
-        intArrayOf(0,1,1,1,0,0,0))
+        intArrayOf(0, 1, 1, 0, 1, 0, 0),
+        intArrayOf(0, 1, 1, 0, 1, 0, 1),
+        intArrayOf(1, 1, 1, 0, 1, 0, 1),
+        intArrayOf(0, 0, 0, 0, 1, 1, 1),
+        intArrayOf(0, 1, 0, 0, 0, 0, 0),
+        intArrayOf(0, 1, 1, 1, 1, 1, 0),
+        intArrayOf(0, 1, 1, 1, 0, 0, 0)
+    )
 
     var visited = arrayOf<Array<Boolean>>()
 
@@ -67,8 +68,7 @@ class ExampleUnitTest {
                     dfs_recursion(i, j)
                     //dfs_stack(i, j);
                     //bfs(i, j);
-                }
-                else {
+                } else {
                     print("=[%s][%s]".format(i, j))
                 }
                 println()
@@ -102,4 +102,67 @@ class ExampleUnitTest {
             }
         }
     }
+
+//    Array<Int> is an Integer[] under the hood, while IntArray is an int[].
+
+    @Test
+    fun question() {
+        val array = intArrayOf(1, 300, 400, 5, 6, 3, 1, 2, 5, 2)
+        solutionOddEven(array)
+        println(array.joinToString())
+    }
+
+    fun solution(numbers: IntArray) {
+        var r = 0
+        for (i in numbers.indices) {
+            if (numbers[i] % 2 == 1) {
+                if (i > r) {
+                    val t= numbers[r]
+                    numbers[r] = numbers[i]
+                    numbers[i] = t
+                }
+                r++
+            }
+        }
+    }
+
+    fun solutionOddEven(numbers: IntArray) {
+        var r = 0
+        var c = 1 // 홀수부터이면 1, 짝수부터이면 0
+        for (i in numbers.indices) {
+            println("[index: $i]")
+            if (r < numbers.size - 1) {
+                val conditionValues = if (c == 1) "홀수" else "짝수"
+                println("값 : [" + numbers[i] + "], 교체값 : [" + numbers[r] + "], 비교 : $conditionValues")
+                if (numbers[i] % 2 == c) {
+                    if (i != r) {
+                        println("교체전 : " + numbers.joinToString())
+                        val t = numbers[r]
+                        numbers[r] = numbers[i]
+                        numbers[i] = t
+                        println("교체후 : " + numbers.joinToString())
+                    }
+                    println(" << 교체 인덱스: $r")
+                }
+
+                if (numbers[r] % 2 != numbers[r + 1] % 2) {
+                    r++
+                } else {
+                    // 0, 1 toggle if로 분기처리하면 비트 연산으로 문제
+                    c = c xor 1
+                }
+                r++
+            }
+            println("")
+        }
+
+//        1	c : 1	0
+//        1	c : 0	1
+//        1	c : 1	0
+
+//        0	c : 1	1
+//        0	c : 0	0
+    }
+
+
 }
