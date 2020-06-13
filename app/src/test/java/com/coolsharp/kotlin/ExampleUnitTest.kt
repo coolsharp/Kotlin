@@ -107,7 +107,7 @@ class ExampleUnitTest {
 
     @Test
     fun question() {
-        val array = intArrayOf(1, 300, 400, 5, 6, 3, 1, 2, 5, 2)
+        val array = intArrayOf(1, 1, 2, 2, 2, 2, 3, 8, 1, 1)
         solutionOddEven(array)
         println(array.joinToString())
     }
@@ -117,7 +117,7 @@ class ExampleUnitTest {
         for (i in numbers.indices) {
             if (numbers[i] % 2 == 1) {
                 if (i > r) {
-                    val t= numbers[r]
+                    val t = numbers[r]
                     numbers[r] = numbers[i]
                     numbers[i] = t
                 }
@@ -128,40 +128,25 @@ class ExampleUnitTest {
 
     fun solutionOddEven(numbers: IntArray) {
         var r = 0
-        var c = 1 // 홀수부터이면 1, 짝수부터이면 0
+        var c = 1 // 홀수가 먼저면 1 짝수가 면저면 0
         for (i in numbers.indices) {
-            println("[index: $i]")
             if (r < numbers.size - 1) {
-                val conditionValues = if (c == 1) "홀수" else "짝수"
-                println("값 : [" + numbers[i] + "], 교체값 : [" + numbers[r] + "], 비교 : $conditionValues")
                 if (numbers[i] % 2 == c) {
-                    if (i != r) {
-                        println("교체전 : " + numbers.joinToString())
-                        val t = numbers[r]
+                    if (i > r) {
+                        val temp = numbers[r]
                         numbers[r] = numbers[i]
-                        numbers[i] = t
-                        println("교체후 : " + numbers.joinToString())
+                        numbers[i] = temp
                     }
-                    println(" << 교체 인덱스: $r")
-                }
 
-                if (numbers[r] % 2 != numbers[r + 1] % 2) {
-                    r++
-                } else {
-                    // 0, 1 toggle if로 분기처리하면 비트 연산으로 문제
-                    c = c xor 1
+                    if (numbers[r] % 2 != numbers[r + 1] % 2) {
+                        r += 2
+                    } else {
+                        c = c xor 1 // 0 or 1 토글
+                        r++
+                    }
                 }
-                r++
             }
-            println("")
         }
-
-//        1	c : 1	0
-//        1	c : 0	1
-//        1	c : 1	0
-
-//        0	c : 1	1
-//        0	c : 0	0
     }
 
 
